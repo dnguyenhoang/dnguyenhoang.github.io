@@ -18,6 +18,7 @@
             color: #2e3436;
             line-height: 1.6;
             margin: 0;
+            display: flex;
         }
 
         header {
@@ -48,10 +49,47 @@
             text-decoration: underline;
         }
 
+        .layout {
+            display: flex;
+            flex: 1;
+        }
+
+        .sidebar {
+            width: 20%;
+            background-color: #f5f5f5;
+            border-right: 1px solid #d3d7cf;
+            padding: 15px;
+            overflow-y: auto;
+            height: 100vh;
+        }
+
+        .sidebar h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 10px;
+        }
+
+        .sidebar ul li a {
+            color: #0056b3;
+            text-decoration: none;
+        }
+
+        .sidebar ul li a:hover {
+            text-decoration: underline;
+        }
+
         .container {
             width: 80%;
             max-width: 1000px;
             margin: 20px auto;
+            padding-left: 20px;
         }
 
         .content-section {
@@ -105,106 +143,118 @@
     <h1>Android Build Setup Guide</h1>
 </header>
 
-<div class="container">
+<div class="layout">
+    <nav class="sidebar">
+        <h3>Contents</h3>
+        <ul>
+            <li><a href="#setup-build-environment">Setup Build Environment</a></li>
+            <li><a href="#download-android-source">Download Android Source</a></li>
+            <li><a href="#patch-framework-source">Patch Framework Source</a></li>
+            <li><a href="#build-android">Build Android</a></li>
+            <li><a href="#prepare-sd-card">Prepare SD Card</a></li>
+            <li><a href="#write-system-vendor">Write System & Vendor Partition</a></li>
+            <li><a href="#copy-firmware-ramdisk">Copy Firmware & Ramdisk</a></li>
+            <li><a href="#download-build-kernel">Download & Build Kernel</a></li>
+            <li><a href="#copy-kernel-binaries">Copy Kernel Binaries</a></li>
+            <li><a href="#hardware-info">JH7110 Hardware Information</a></li>
+        </ul>
+    </nav>
 
-    <div class="content-section">
-        <h2>Setup Build Environment</h2>
-        <p><a href="https://source.android.com/setup/build/initializing" target="_blank">https://source.android.com/setup/build/initializing</a></p>
-        <hr>
-    </div>
+    <div class="container">
 
-    <div class="content-section">
-        <h2>Download Android Source</h2>
-        <p><a href="https://github.com/android-risc-v/local_manifests" target="_blank">https://github.com/android-risc-v/local_manifests</a></p>
-        <hr>
-    </div>
+        <div id="setup-build-environment" class="content-section">
+            <h2>Setup Build Environment</h2>
+            <p><a href="https://source.android.com/setup/build/initializing" target="_blank">https://source.android.com/setup/build/initializing</a></p>
+            <hr>
+        </div>
 
-    <div class="content-section">
-        <h2>Patch Framework Source</h2>
-        <p><a href="https://github.com/android-risc-v/device_arv_jh7110/wiki/arv-14-:-framework-patch" target="_blank">https://github.com/android-risc-v/device_arv_jh7110/wiki/arv-14-:-framework-patch</a></p>
-        <hr>
-    </div>
+        <div id="download-android-source" class="content-section">
+            <h2>Download Android Source</h2>
+            <p><a href="https://github.com/android-risc-v/local_manifests" target="_blank">https://github.com/android-risc-v/local_manifests</a></p>
+            <hr>
+        </div>
 
-    <div class="content-section">
-        <h2>Build Android</h2>
-        <p>Refer to <a href="http://source.android.com/source/building.html" target="_blank">http://source.android.com/source/building.html</a></p>
-        <div class="code-block">
-            <pre>$ source build/envsetup.sh
+        <div id="patch-framework-source" class="content-section">
+            <h2>Patch Framework Source</h2>
+            <p><a href="https://github.com/android-risc-v/device_arv_jh7110/wiki/arv-14-:-framework-patch" target="_blank">https://github.com/android-risc-v/device_arv_jh7110/wiki/arv-14-:-framework-patch</a></p>
+            <hr>
+        </div>
+
+        <div id="build-android" class="content-section">
+            <h2>Build Android</h2>
+            <p>Refer to <a href="http://source.android.com/source/building.html" target="_blank">http://source.android.com/source/building.html</a></p>
+            <div class="code-block">
+                <pre>$ source build/envsetup.sh
 $ lunch jh7110-eng
 $ make ramdisk systemimage vendorimage</pre>
+            </div>
+            <hr>
         </div>
-        <hr>
-    </div>
 
-    <div class="content-section">
-        <h2>Prepare SD Card</h2>
-        <p>Partitions of the card should be set up as follows:</p>
-        <ul>
-            <li>p1: 128MB for /vendor : Do fdisk, new primary partition</li>
-            <li>p2: 1024MB for /system : Do fdisk, new primary partition</li>
-            <li>p3: 128MB for boot : Do fdisk, mkfs.vfat, set EFI type</li>
-            <li>p4: Remaining for /data : Do fdisk, mkfs.ext4</li>
-        </ul>
-        <p>Set volume label of /data partition as userdata: use -L option for mkfs.ext4</p>
-        <hr>
-    </div>
+        <div id="prepare-sd-card" class="content-section">
+            <h2>Prepare SD Card</h2>
+            <p>Partitions of the card should be set up as follows:</p>
+            <ul>
+                <li>p1: 128MB for /vendor : Do fdisk, new primary partition</li>
+                <li>p2: 1024MB for /system : Do fdisk, new primary partition</li>
+                <li>p3: 128MB for boot : Do fdisk, mkfs.vfat, set EFI type</li>
+                <li>p4: Remaining for /data : Do fdisk, mkfs.ext4</li>
+            </ul>
+            <p>Set volume label of /data partition as userdata: use -L option for mkfs.ext4</p>
+            <hr>
+        </div>
 
-    <div class="content-section">
-        <h2>Write System & Vendor Partition</h2>
-        <div class="code-block">
-            <pre>$ cd out/target/product/jh7110
+        <div id="write-system-vendor" class="content-section">
+            <h2>Write System & Vendor Partition</h2>
+            <div class="code-block">
+                <pre>$ cd out/target/product/jh7110
 $ sudo dd if=vendor.img of=/dev/<p1> bs=1M
 $ sudo dd if=system.img of=/dev/<p2> bs=1M</pre>
-        </div>
-        <hr>
-    </div>
-
-    <div class="content-section">
-        <h2>Copy Firmware & Ramdisk to Boot Partition</h2>
-        <p>device/arv/jh7110/boot/* to p3:/</p>
-        <p>out/target/product/jh7110/ramdisk.img to p3:/</p>
-        <hr>
-    </div>
-
-    <div class="content-section">
-        <h2>Download & Build Kernel</h2>
-
-        <h3>Install Cross-Compiler</h3>
-        <div class="code-block">
-            <pre>$ sudo apt install gcc-riscv64-linux-gnu</pre>
+            </div>
+            <hr>
         </div>
 
-        <h3>Git Clone Kernel Source</h3>
-        <p><a href="https://github.com/android-risc-v/kernel_arv" target="_blank">https://github.com/android-risc-v/kernel_arv</a></p>
+        <div id="copy-firmware-ramdisk" class="content-section">
+            <h2>Copy Firmware & Ramdisk to Boot Partition</h2>
+            <p>device/arv/jh7110/boot/* to p3:/</p>
+            <p>out/target/product/jh7110/ramdisk.img to p3:/</p>
+            <hr>
+        </div>
 
-        <h3>Build the Kernel</h3>
-        <div class="code-block">
-            <pre>$ ARCH=riscv scripts/kconfig/merge_config.sh arch/riscv/configs/defconfig kernel/configs/android-base.config kernel/configs/android-recommended.config
+        <div id="download-build-kernel" class="content-section">
+            <h2>Download & Build Kernel</h2>
+
+            <h3>Install Cross-Compiler</h3>
+            <div class="code-block">
+                <pre>$ sudo apt install gcc-riscv64-linux-gnu</pre>
+            </div>
+
+            <h3>Git Clone Kernel Source</h3>
+            <p><a href="https://github.com/android-risc-v/kernel_arv" target="_blank">https://github.com/android-risc-v/kernel_arv</a></p>
+
+            <h3>Build the Kernel</h3>
+            <div class="code-block">
+                <pre>$ ARCH=riscv scripts/kconfig/merge_config.sh arch/riscv/configs/defconfig kernel/configs/android-base.config kernel/configs/android-recommended.config
 $ ARCH=riscv CROSS_COMPILE=riscv64-linux-gnu- make Image.gz starfive/jh7110-starfive-visionfive-2-v1.2a.dtb</pre>
+            </div>
+            <hr>
         </div>
-        <hr>
-    </div>
 
-    <div class="content-section">
-        <h2>Copy Kernel Binaries to Boot Partition</h2>
-        <div class="code-block">
-            <pre>&lt;kernel directory&gt;/arch/riscv/boot/Image.gz to p3:/
+        <div id="copy-kernel-binaries" class="content-section">
+            <h2>Copy Kernel Binaries to Boot Partition</h2>
+            <div class="code-block">
+                <pre>&lt;kernel directory&gt;/arch/riscv/boot/Image.gz to p3:/
 &lt;kernel directory&gt;/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2-v1.2a.dtb to p3:/dtbs/starfive/</pre>
+            </div>
+            <hr>
         </div>
-        <hr>
-    </div>
 
-    <div class="content-section">
-        <p>Use -j[n] option for make command if the build host has a good number of CPU cores.</p>
-        <p>Connect a USB keyboard before powering up the board, as at least one input device should exist.</p>
-        <hr>
-    </div>
+        <div id="hardware-info" class="content-section">
+            <h2>JH7110 Hardware Information</h2>
+            <p><a href="https://rvspace.org" target="_blank">https://rvspace.org</a></p>
+        </div>
 
-    <div class="content-section">
-        <h2>JH7110 Hardware Information</h2>
-        <p><a href="https://rvspace.org" target="_blank">https://rvspace.org</a></p>
     </div>
-
 </div>
 
 <footer>
