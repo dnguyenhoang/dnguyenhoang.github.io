@@ -13,34 +13,34 @@
         }
 
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f7fa;
-            color: #333;
-            line-height: 1.6;
+            font-family: 'Roboto', Arial, sans-serif;
+            background-color: #1e1e2f;
+            color: #d1d5db;
+            line-height: 1.8;
             margin: 0;
             padding: 0;
         }
 
         header {
-            background-color: #4CAF50;
-            color: white;
+            background-color: #282c34;
+            color: #61dafb;
             padding: 20px;
             text-align: center;
+            border-bottom: 3px solid #3d414d;
         }
 
         h1 {
-            font-size: 2rem;
-            margin-bottom: 20px;
-            color: #333;
+            font-size: 2.5rem;
         }
 
         h2 {
-            font-size: 1.5rem;
-            color: #444;
+            font-size: 1.8rem;
+            color: #61dafb;
+            margin-bottom: 15px;
         }
 
         a {
-            color: #4CAF50;
+            color: #61dafb;
             text-decoration: none;
             font-weight: bold;
         }
@@ -53,49 +53,49 @@
             width: 90%;
             max-width: 1200px;
             margin: 20px auto;
+            padding: 20px;
+            background-color: #282c34;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
         }
 
         .content-section {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
 
         .content-section ul {
-            list-style-type: none;
-            margin-left: 20px;
+            list-style-type: disc;
+            margin-left: 40px;
+            color: #d1d5db;
         }
 
         .content-section ul li {
             margin: 10px 0;
-            padding-left: 10px;
         }
 
         .code-block {
-            background-color: #2c3e50;
-            color: #ecf0f1;
-            padding: 15px;
+            background-color: #1e1e2f;
+            color: #cbd5e1;
+            border: 1px solid #3d414d;
             border-radius: 8px;
+            padding: 15px;
             font-family: 'Courier New', Courier, monospace;
-            margin-bottom: 20px;
+            font-size: 0.95rem;
             overflow-x: auto;
         }
 
-        .code-block code {
+        .code-block pre {
             white-space: pre-wrap;
             word-wrap: break-word;
         }
 
         footer {
-            background-color: #2c3e50;
-            color: white;
+            background-color: #282c34;
+            color: #61dafb;
             text-align: center;
-            padding: 15px 0;
-            position: fixed;
-            width: 100%;
-            bottom: 0;
+            padding: 15px;
+            margin-top: 40px;
+            border-top: 3px solid #3d414d;
         }
     </style>
 </head>
@@ -126,34 +126,30 @@
         <h2>Build Android</h2>
         <p>Refer to <a href="http://source.android.com/source/building.html" target="_blank">http://source.android.com/source/building.html</a></p>
         <div class="code-block">
-            <pre>
-$ source build/envsetup.sh
+            <pre>$ source build/envsetup.sh
 $ lunch jh7110-eng
-$ make ramdisk systemimage vendorimage
-            </pre>
+$ make ramdisk systemimage vendorimage</pre>
         </div>
     </div>
 
     <div class="content-section">
         <h2>Prepare SD Card</h2>
-        <p>Partitions of the card should be set-up like followings:</p>
+        <p>Partitions of the card should be set up as follows:</p>
         <ul>
             <li>p1: 128MB for /vendor : Do fdisk, new primary partition</li>
             <li>p2: 1024MB for /system : Do fdisk, new primary partition</li>
             <li>p3: 128MB for boot : Do fdisk, mkfs.vfat, set EFI type</li>
             <li>p4: Remaining for /data : Do fdisk, mkfs.ext4</li>
         </ul>
-        <p>Set volume label of /data partition as userdata : use -L option for mkfs.ext4</p>
+        <p>Set volume label of /data partition as userdata: use -L option for mkfs.ext4</p>
     </div>
 
     <div class="content-section">
         <h2>Write System & Vendor Partition</h2>
         <div class="code-block">
-            <pre>
-$ cd out/target/product/jh7110
-$ sudo dd if=vendor.img of=/dev/&lt;p1&gt; bs=1M
-$ sudo dd if=system.img of=/dev/&lt;p2&gt; bs=1M
-            </pre>
+            <pre>$ cd out/target/product/jh7110
+$ sudo dd if=vendor.img of=/dev/<p1> bs=1M
+$ sudo dd if=system.img of=/dev/<p2> bs=1M</pre>
         </div>
     </div>
 
@@ -168,40 +164,30 @@ $ sudo dd if=system.img of=/dev/&lt;p2&gt; bs=1M
 
         <h3>Install Cross-Compiler</h3>
         <div class="code-block">
-            <pre>
-$ sudo apt install gcc-riscv64-linux-gnu
-            </pre>
+            <pre>$ sudo apt install gcc-riscv64-linux-gnu</pre>
         </div>
 
         <h3>Git Clone Kernel Source</h3>
-        <div class="code-block">
-            <pre>
-$ git clone https://github.com/android-risc-v/kernel_arv
-            </pre>
-        </div>
+        <p><a href="https://github.com/android-risc-v/kernel_arv" target="_blank">https://github.com/android-risc-v/kernel_arv</a></p>
 
         <h3>Build the Kernel</h3>
         <div class="code-block">
-            <pre>
-$ ARCH=riscv scripts/kconfig/merge_config.sh arch/riscv/configs/defconfig kernel/configs/android-base.config kernel/configs/android-recommended.config
-$ ARCH=riscv CROSS_COMPILE=riscv64-linux-gnu- make Image.gz starfive/jh7110-starfive-visionfive-2-v1.2a.dtb
-            </pre>
+            <pre>$ ARCH=riscv scripts/kconfig/merge_config.sh arch/riscv/configs/defconfig kernel/configs/android-base.config kernel/configs/android-recommended.config
+$ ARCH=riscv CROSS_COMPILE=riscv64-linux-gnu- make Image.gz starfive/jh7110-starfive-visionfive-2-v1.2a.dtb</pre>
         </div>
     </div>
 
     <div class="content-section">
         <h2>Copy Kernel Binaries to Boot Partition</h2>
         <div class="code-block">
-            <pre>
-&lt;kernel directory&gt;/arch/riscv/boot/Image.gz to p3:/
-&lt;kernel directory&gt;/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2-v1.2a.dtb to p3:/dtbs/starfive/
-            </pre>
+            <pre>&lt;kernel directory&gt;/arch/riscv/boot/Image.gz to p3:/
+&lt;kernel directory&gt;/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2-v1.2a.dtb to p3:/dtbs/starfive/</pre>
         </div>
     </div>
 
     <div class="content-section">
-        <p>Use -j[n] option for make command, if build host has a good number of CPU cores.</p>
-        <p>Connect USB keyboard before power-up the board, at least one input device should exist.</p>
+        <p>Use -j[n] option for make command if the build host has a good number of CPU cores.</p>
+        <p>Connect a USB keyboard before powering up the board, as at least one input device should exist.</p>
     </div>
 
     <div class="content-section">
