@@ -4,71 +4,212 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Android Build Setup</title>
+    <style>
+        /* Reset default styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fa;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            color: #444;
+        }
+
+        a {
+            color: #4CAF50;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 20px auto;
+        }
+
+        .content-section {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .content-section ul {
+            list-style-type: none;
+            margin-left: 20px;
+        }
+
+        .content-section ul li {
+            margin: 10px 0;
+            padding-left: 10px;
+        }
+
+        .code-block {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', Courier, monospace;
+            margin-bottom: 20px;
+            overflow-x: auto;
+        }
+
+        .code-block code {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
 </head>
 <body>
-    <h1>Setup Build Environment</h1>
-    <p><a href="https://source.android.com/setup/build/initializing">https://source.android.com/setup/build/initializing</a></p>
 
-    <h1>Download Android Source</h1>
-    <p><a href="https://github.com/android-risc-v/local_manifests">https://github.com/android-risc-v/local_manifests</a></p>
+<header>
+    <h1>Android Build Setup Guide</h1>
+</header>
 
-    <h1>Patch Framework Source</h1>
-    <p><a href="https://github.com/android-risc-v/device_arv_jh7110/wiki/arv-14-:-framework-patch">https://github.com/android-risc-v/device_arv_jh7110/wiki/arv-14-:-framework-patch</a></p>
+<div class="container">
 
-    <h1>Build Android</h1>
-    <p>Refer to <a href="http://source.android.com/source/building.html">http://source.android.com/source/building.html</a></p>
-    <pre>
-        $ source build/envsetup.sh
-        $ lunch jh7110-eng
-        $ make ramdisk systemimage vendorimage
-    </pre>
+    <div class="content-section">
+        <h2>Setup Build Environment</h2>
+        <p><a href="https://source.android.com/setup/build/initializing" target="_blank">https://source.android.com/setup/build/initializing</a></p>
+    </div>
 
-    <h1>Prepare SD Card</h1>
-    <p>Partitions of the card should be set-up like followings:</p>
-    <ul>
-        <li>p1: 128MB for /vendor: Do fdisk, new primary partition</li>
-        <li>p2: 1024MB for /system: Do fdisk, new primary partition</li>
-        <li>p3: 128MB for boot: Do fdisk, mkfs.vfat, set EFI type</li>
-        <li>p4: Remaining for /data: Do fdisk, mkfs.ext4</li>
-    </ul>
-    <p>Set volume label of /data partition as userdata: use -L option for mkfs.ext4</p>
+    <div class="content-section">
+        <h2>Download Android Source</h2>
+        <p><a href="https://github.com/android-risc-v/local_manifests" target="_blank">https://github.com/android-risc-v/local_manifests</a></p>
+    </div>
 
-    <h1>Write System & Vendor Partition</h1>
-    <pre>
-        $ cd out/target/product/jh7110
-        $ sudo dd if=vendor.img of=/dev/&lt;p1&gt; bs=1M
-        $ sudo dd if=system.img of=/dev/&lt;p2&gt; bs=1M
-    </pre>
+    <div class="content-section">
+        <h2>Patch Framework Source</h2>
+        <p><a href="https://github.com/android-risc-v/device_arv_jh7110/wiki/arv-14-:-framework-patch" target="_blank">https://github.com/android-risc-v/device_arv_jh7110/wiki/arv-14-:-framework-patch</a></p>
+    </div>
 
-    <h1>Copy Firmware & Ramdisk to Boot Partition</h1>
-    <p>device/arv/jh7110/boot/* to p3:/</p>
-    <p>out/target/product/jh7110/ramdisk.img to p3:/</p>
+    <div class="content-section">
+        <h2>Build Android</h2>
+        <p>Refer to <a href="http://source.android.com/source/building.html" target="_blank">http://source.android.com/source/building.html</a></p>
+        <div class="code-block">
+            <pre>
+$ source build/envsetup.sh
+$ lunch jh7110-eng
+$ make ramdisk systemimage vendorimage
+            </pre>
+        </div>
+    </div>
 
-    <h1>Download & Build Kernel</h1>
-    <h2>Install Cross-Compiler</h2>
-    <pre>
-        $ sudo apt install gcc-riscv64-linux-gnu
-    </pre>
+    <div class="content-section">
+        <h2>Prepare SD Card</h2>
+        <p>Partitions of the card should be set-up like followings:</p>
+        <ul>
+            <li>p1: 128MB for /vendor : Do fdisk, new primary partition</li>
+            <li>p2: 1024MB for /system : Do fdisk, new primary partition</li>
+            <li>p3: 128MB for boot : Do fdisk, mkfs.vfat, set EFI type</li>
+            <li>p4: Remaining for /data : Do fdisk, mkfs.ext4</li>
+        </ul>
+        <p>Set volume label of /data partition as userdata : use -L option for mkfs.ext4</p>
+    </div>
 
-    <h2>Git Clone Kernel Source</h2>
-    <p><a href="https://github.com/android-risc-v/kernel_arv">https://github.com/android-risc-v/kernel_arv</a></p>
+    <div class="content-section">
+        <h2>Write System & Vendor Partition</h2>
+        <div class="code-block">
+            <pre>
+$ cd out/target/product/jh7110
+$ sudo dd if=vendor.img of=/dev/&lt;p1&gt; bs=1M
+$ sudo dd if=system.img of=/dev/&lt;p2&gt; bs=1M
+            </pre>
+        </div>
+    </div>
 
-    <h2>Build the Kernel</h2>
-    <pre>
-        $ ARCH=riscv scripts/kconfig/merge_config.sh arch/riscv/configs/defconfig kernel/configs/android-base.config kernel/configs/android-recommended.config
-        $ ARCH=riscv CROSS_COMPILE=riscv64-linux-gnu- make Image.gz starfive/jh7110-starfive-visionfive-2-v1.2a.dtb
-    </pre>
+    <div class="content-section">
+        <h2>Copy Firmware & Ramdisk to Boot Partition</h2>
+        <p>device/arv/jh7110/boot/* to p3:/</p>
+        <p>out/target/product/jh7110/ramdisk.img to p3:/</p>
+    </div>
 
-    <h1>Copy Kernel Binaries to Boot Partition</h1>
-    <pre>
-        &lt;kernel directory&gt;/arch/riscv/boot/Image.gz to p3:/
-        &lt;kernel directory&gt;/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2-v1.2a.dtb to p3:/dtbs/starfive/
-    </pre>
+    <div class="content-section">
+        <h2>Download & Build Kernel</h2>
 
-    <p>Use -j[n] option for make command, if build host has a good number of CPU cores.</p>
-    <p>Connect USB keyboard before power-up the board, at least one input device should exist.</p>
+        <h3>Install Cross-Compiler</h3>
+        <div class="code-block">
+            <pre>
+$ sudo apt install gcc-riscv64-linux-gnu
+            </pre>
+        </div>
 
-    <h1>JH7110 Hardware Information</h1>
-    <p><a href="https://rvspace.org">https://rvspace.org</a></p>
+        <h3>Git Clone Kernel Source</h3>
+        <p><a href="https://github.com/android-risc-v/kernel_arv" target="_blank">https://github.com/android-risc-v/kernel_arv</a></p>
+
+        <h3>Build the Kernel</h3>
+        <div class="code-block">
+            <pre>
+$ ARCH=riscv scripts/kconfig/merge_config.sh arch/riscv/configs/defconfig kernel/configs/android-base.config kernel/configs/android-recommended.config
+$ ARCH=riscv CROSS_COMPILE=riscv64-linux-gnu- make Image.gz starfive/jh7110-starfive-visionfive-2-v1.2a.dtb
+            </pre>
+        </div>
+    </div>
+
+    <div class="content-section">
+        <h2>Copy Kernel Binaries to Boot Partition</h2>
+        <div class="code-block">
+            <pre>
+&lt;kernel directory&gt;/arch/riscv/boot/Image.gz to p3:/
+&lt;kernel directory&gt;/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2-v1.2a.dtb to p3:/dtbs/starfive/
+            </pre>
+        </div>
+    </div>
+
+    <div class="content-section">
+        <p>Use -j[n] option for make command, if build host has a good number of CPU cores.</p>
+        <p>Connect USB keyboard before power-up the board, at least one input device should exist.</p>
+    </div>
+
+    <div class="content-section">
+        <h2>JH7110 Hardware Information</h2>
+        <p><a href="https://rvspace.org" target="_blank">https://rvspace.org</a></p>
+    </div>
+
+</div>
+
+<footer>
+    <p>&copy; 2024 Android Build Guide | All rights reserved</p>
+</footer>
+
 </body>
 </html>
