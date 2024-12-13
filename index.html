@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Android Build Instruction for VisionFive 2</title>
     <style>
-        /* Reset default styles */
+        /* Reset styles */
         * {
             margin: 0;
             padding: 0;
@@ -14,35 +14,34 @@
 
         body {
             font-family: 'Roboto', Arial, sans-serif;
-            background-color: #1e1e2f;
-            color: #d1d5db;
-            line-height: 1.8;
+            background-color: #ffffff;
+            color: #2e3436;
+            line-height: 1.6;
             margin: 0;
-            padding: 0;
         }
 
         header {
-            background-color: #282c34;
-            color: #61dafb;
-            padding: 20px;
+            background-color: #282828;
+            color: #ffffff;
+            padding: 15px;
             text-align: center;
-            border-bottom: 3px solid #3d414d;
+            border-bottom: 2px solid #888;
         }
 
         h1 {
-            font-size: 2.5rem;
+            font-size: 2rem;
         }
 
         h2 {
-            font-size: 1.8rem;
-            color: #61dafb;
-            margin-bottom: 15px;
+            font-size: 1.5rem;
+            color: #0056b3;
+            margin-top: 20px;
+            margin-bottom: 10px;
         }
 
         a {
-            color: #61dafb;
+            color: #0056b3;
             text-decoration: none;
-            font-weight: bold;
         }
 
         a:hover {
@@ -50,35 +49,30 @@
         }
 
         .container {
-            width: 90%;
-            max-width: 1200px;
+            width: 80%;
+            max-width: 1000px;
             margin: 20px auto;
-            padding: 20px;
-            background-color: #282c34;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
         }
 
         .content-section {
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         .content-section ul {
-            list-style-type: disc;
-            margin-left: 40px;
-            color: #d1d5db;
+            margin-left: 20px;
+            list-style: disc;
         }
 
         .content-section ul li {
-            margin: 10px 0;
+            margin-bottom: 5px;
         }
 
         .code-block {
-            background-color: #1e1e2f;
-            color: #cbd5e1;
-            border: 1px solid #3d414d;
-            border-radius: 8px;
-            padding: 15px;
+            background-color: #f5f5f5;
+            color: #000000;
+            border: 1px solid #d3d7cf;
+            border-radius: 4px;
+            padding: 10px;
             font-family: 'Courier New', Courier, monospace;
             font-size: 0.95rem;
             overflow-x: auto;
@@ -90,12 +84,18 @@
         }
 
         footer {
-            background-color: #282c34;
-            color: #61dafb;
+            background-color: #f5f5f5;
+            color: #2e3436;
             text-align: center;
-            padding: 15px;
-            margin-top: 40px;
-            border-top: 3px solid #3d414d;
+            padding: 10px;
+            margin-top: 30px;
+            border-top: 1px solid #d3d7cf;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #d3d7cf;
+            margin: 20px 0;
         }
     </style>
 </head>
@@ -110,16 +110,19 @@
     <div class="content-section">
         <h2>Setup Build Environment</h2>
         <p><a href="https://source.android.com/setup/build/initializing" target="_blank">https://source.android.com/setup/build/initializing</a></p>
+        <hr>
     </div>
 
     <div class="content-section">
         <h2>Download Android Source</h2>
         <p><a href="https://github.com/android-risc-v/local_manifests" target="_blank">https://github.com/android-risc-v/local_manifests</a></p>
+        <hr>
     </div>
 
     <div class="content-section">
         <h2>Patch Framework Source</h2>
         <p><a href="https://github.com/android-risc-v/device_arv_jh7110/wiki/arv-14-:-framework-patch" target="_blank">https://github.com/android-risc-v/device_arv_jh7110/wiki/arv-14-:-framework-patch</a></p>
+        <hr>
     </div>
 
     <div class="content-section">
@@ -130,6 +133,7 @@
 $ lunch jh7110-eng
 $ make ramdisk systemimage vendorimage</pre>
         </div>
+        <hr>
     </div>
 
     <div class="content-section">
@@ -142,6 +146,7 @@ $ make ramdisk systemimage vendorimage</pre>
             <li>p4: Remaining for /data : Do fdisk, mkfs.ext4</li>
         </ul>
         <p>Set volume label of /data partition as userdata: use -L option for mkfs.ext4</p>
+        <hr>
     </div>
 
     <div class="content-section">
@@ -151,12 +156,14 @@ $ make ramdisk systemimage vendorimage</pre>
 $ sudo dd if=vendor.img of=/dev/<p1> bs=1M
 $ sudo dd if=system.img of=/dev/<p2> bs=1M</pre>
         </div>
+        <hr>
     </div>
 
     <div class="content-section">
         <h2>Copy Firmware & Ramdisk to Boot Partition</h2>
         <p>device/arv/jh7110/boot/* to p3:/</p>
         <p>out/target/product/jh7110/ramdisk.img to p3:/</p>
+        <hr>
     </div>
 
     <div class="content-section">
@@ -175,6 +182,7 @@ $ sudo dd if=system.img of=/dev/<p2> bs=1M</pre>
             <pre>$ ARCH=riscv scripts/kconfig/merge_config.sh arch/riscv/configs/defconfig kernel/configs/android-base.config kernel/configs/android-recommended.config
 $ ARCH=riscv CROSS_COMPILE=riscv64-linux-gnu- make Image.gz starfive/jh7110-starfive-visionfive-2-v1.2a.dtb</pre>
         </div>
+        <hr>
     </div>
 
     <div class="content-section">
@@ -183,11 +191,13 @@ $ ARCH=riscv CROSS_COMPILE=riscv64-linux-gnu- make Image.gz starfive/jh7110-star
             <pre>&lt;kernel directory&gt;/arch/riscv/boot/Image.gz to p3:/
 &lt;kernel directory&gt;/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2-v1.2a.dtb to p3:/dtbs/starfive/</pre>
         </div>
+        <hr>
     </div>
 
     <div class="content-section">
         <p>Use -j[n] option for make command if the build host has a good number of CPU cores.</p>
         <p>Connect a USB keyboard before powering up the board, as at least one input device should exist.</p>
+        <hr>
     </div>
 
     <div class="content-section">
